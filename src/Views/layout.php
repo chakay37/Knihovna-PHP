@@ -22,7 +22,7 @@ use App\Auth;
             <a href="/">Seznam knih</a>
             <?php if (Auth::checkToken()): ?>
                 <a href="/admin">Správa</a>
-                <a href="/admin/new">Přidat knihu</a>
+                <a href="/admin/vytvorit">Přidat knihu</a>
                 <a href="/admin/import">Import</a>
                 <form method="post" action="/admin/odhlaseni" class="nav-logout">
                     <button type="submit" class="link-button">Odhlásit <?= e(Auth::getUser()['username'] ?? '') ?></button>

@@ -40,4 +40,43 @@ class BookRepository
         $book['rating'] = $book['rating'] === null ? null : (int) $book['rating'];
         return $book;
     }
+
+    /** @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book */
+    public function create(array $book): int
+    {
+        $stmt = $this->db->prepare(
+            'INSERT INTO books (title, author, year, annotation, rating)
+             VALUES (:title, :author, :year, :annotation, :rating)'
+        );
+        $stmt->execute([
+            'title' => $book['title'],
+            'author' => $book['author'],
+            'year' => $book['year'],
+            'annotation' => $book['annotation'],
+            'rating' => $book['rating'],
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
+
+    /** Kniha je duplicitní, pokud má stejný název + autora + rok. */
+    public function isDuplicate(string $title, string $author, int $year): bool
+    {
+        $stmt = $this->db->prepare(
+            'SELECT 1 FROM books WHERE title = :title AND author = :author AND year = :year LIMIT 1'
+        );
+        $stmt->execute(['title' => $title, 'author' => $author, 'year' => $year]);
+        return $stmt->fetchColumn() !== false;
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM books WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function count(): int
+    {
+        return (int) $this->db->query('SELECT COUNT(*) FROM books')->fetchColumn();
+    }
 }
