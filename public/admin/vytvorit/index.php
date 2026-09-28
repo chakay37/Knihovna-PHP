@@ -1,60 +1,36 @@
 <?php
 declare(strict_types=1);
-session_start();
-
 require_once __DIR__ . '/../../../src/helpers.php';
-require_once __DIR__ . '/../../../src/Auth.php';
-require_once __DIR__ . '/../../../src/Database.php';
-require_once __DIR__ . '/../../../src/BookValidator.php';
-require_once __DIR__ . '/../../../src/Repositories/BookRepository.php';
+require_admin();
 
-use App\Auth;
 use App\BookValidator;
-use App\Database;
-use App\Repositories\BookRepository;
 
-// Jen pro přihlášené administrátory
-if (!Auth::checkToken()) {
-    header('Location: /admin/prihlaseni/');
-    exit;
-}
-
-/** @var array<string, string> $errors */
 $errors = [];
 $old = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+if (is_post()) {
     $old = $_POST;
     [$data, $errors] = BookValidator::validate($_POST);
 
-    $repo = new BookRepository(Database::connection());
-    if ($errors === [] && $repo->isDuplicate($data['title'], $data['author'], $data['year'])) {
+    if ($errors === [] && books()->isDuplicate($data)) {
         $errors['title'] = 'Tato kniha už v evidenci je.';
     }
 
     if ($errors === []) {
-        $id = $repo->create($data);
         // Post/Redirect/Get: obnovení stránky pak neodešle formulář znovu
-        header('Location: /kniha/?id=' . $id);
-        exit;
+        redirect('/kniha/?id=' . books()->create($data));
     }
 
     http_response_code(422);
 }
 
 $old = array_map(static fn ($v) => is_string($v) ? $v : '', $old);
-$field = static function (string $name) use ($errors): string {
-    return isset($errors[$name])
-        ? sprintf(' aria-invalid="true" aria-describedby="%s-error"', $name)
-        : '';
-};
-$error = static function (string $name) use ($errors): string {
-    return isset($errors[$name])
-        ? sprintf('<p class="field__error" id="%s-error">%s</p>', $name, e($errors[$name]))
-        : '';
-};
-$maxYear = (int) date('Y') + 1;
+$field = static fn (string $name): string => isset($errors[$name])
+    ? sprintf(' aria-invalid="true" aria-describedby="%s-error"', $name)
+    : '';
+$error = static fn (string $name): string => isset($errors[$name])
+    ? sprintf('<p class="field__error" id="%s-error">%s</p>', $name, e($errors[$name]))
+    : '';
 
 ob_start();
 ?>
@@ -65,8 +41,7 @@ ob_start();
         <p class="flash flash--error" role="alert">Formulář obsahuje chyby. Opravte označená pole.</p>
     <?php endif; ?>
 
-    <form method="post" action="/admin/vytvorit/" class="form" data-book-form>
-
+    <form method="post" action="/admin/vytvorit/" class="form">
         <div class="field">
             <label for="title">Název <span class="required" aria-hidden="true">*</span></label>
             <input id="title" name="title" value="<?= e($old['title'] ?? '') ?>"
@@ -85,7 +60,7 @@ ob_start();
             <div class="field">
                 <label for="year">Rok vydání <span class="required" aria-hidden="true">*</span></label>
                 <input id="year" name="year" type="number" inputmode="numeric" value="<?= e($old['year'] ?? '') ?>"
-                       required min="<?= BookValidator::MIN_YEAR ?>" max="<?= $maxYear ?>" step="1"<?= $field('year') ?>>
+                       required min="<?= BookValidator::MIN_YEAR ?>" max="<?= BookValidator::maxYear() ?>" step="1"<?= $field('year') ?>>
                 <?= $error('year') ?>
             </div>
 
@@ -106,13 +81,13 @@ ob_start();
         <div class="field">
             <label for="annotation">Anotace</label>
             <textarea id="annotation" name="annotation" rows="6" maxlength="<?= BookValidator::MAX_ANNOTATION ?>"
-                      data-counter<?= $field('annotation') ?>><?= e($old['annotation'] ?? '') ?></textarea>
+                      <?= $field('annotation') ?>><?= e($old['annotation'] ?? '') ?></textarea>
             <?= $error('annotation') ?>
         </div>
 
         <div class="form__actions">
             <button type="submit" class="button">Uložit knihu</button>
-            <a href="/admin" class="button button--secondary">Zrušit</a>
+            <a href="/admin/" class="button button--secondary">Zrušit</a>
         </div>
     </form>
 </div>

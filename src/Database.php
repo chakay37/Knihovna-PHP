@@ -12,19 +12,15 @@ final class Database
 
     public static function connection(): PDO
     {
-        if (self::$pdo !== null) {
-            return self::$pdo;
-        }
-
-        $dsn = sprintf(
-            'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
-            env('DB_HOST', 'db'),
-            env('DB_PORT', '3306'),
-            env('DB_NAME', 'knihovna')
+        return self::$pdo ??= new PDO(
+            sprintf(
+                'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+                env('DB_HOST', 'db'),
+                env('DB_PORT', '3306'),
+                env('DB_NAME', 'knihovna')
+            ),
+            env('DB_USER'),
+            env('DB_PASSWORD')
         );
-
-        self::$pdo = new PDO($dsn, env('DB_USER'), env('DB_PASSWORD'));
-
-        return self::$pdo;
     }
 }
