@@ -1,0 +1,11 @@
+{
+  "name": "knihovna",
+  "private": true,
+  "scripts": {
+    "build": "sass assets/scss/app.scss public/assets/css/app.css --style=compressed --no-source-map",
+    "watch": "sass assets/scss/app.scss public/assets/css/app.css --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0"
+  }
+}
