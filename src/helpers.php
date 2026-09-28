@@ -12,3 +12,8 @@ function env(string $key, ?string $default = null): ?string
     $value = getenv($key);
     return $value === false ? $default : $value;
 }
+
+function layout(string $title, string $content): void
+{
+    require __DIR__ . '/Views/layout.php';
+}

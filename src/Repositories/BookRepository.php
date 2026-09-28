@@ -15,7 +15,7 @@ class BookRepository
     }
 
         /** @return list<array<string, mixed>> */
-    public function all(string $sort = 'title', string $direction = 'asc'): array
+    public function getAll(string $sort = 'title', string $direction = 'asc'): array
     {
         $column = self::SORTABLE[$sort] ?? 'title';
         $direction = strtolower($direction) === 'desc' ? 'DESC' : 'ASC';
@@ -23,5 +23,21 @@ class BookRepository
         return $this->db
             ->query("SELECT id, title, author, year FROM books ORDER BY {$column} {$direction}, title ASC")
             ->fetchAll();
+    }
+
+
+    /** @return array<string, mixed>|null */
+    public function get(int $id): ?array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM books WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $book = $stmt->fetch();
+        if ($book === false) {
+            return null;
+        }
+        $book['id'] = (int) $book['id'];
+        $book['year'] = (int) $book['year'];
+        $book['rating'] = $book['rating'] === null ? null : (int) $book['rating'];
+        return $book;
     }
 }
