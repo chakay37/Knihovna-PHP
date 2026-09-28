@@ -1,0 +1,32 @@
+:root {
+  --c-paper: #eef1ec;
+  --c-surface: #ffffff;
+  --c-ink: #1c2622;
+  --c-ink-soft: #55635c;
+  --c-line: #cdd5cf;
+  --c-lamp: #1f5a43;
+  --c-lamp-strong: #16432f;
+  --c-card-red: #c2413a;
+  --c-danger: #a3281f;
+  --c-success-bg: #e2efe7;
+  --c-error-bg: #f8e3e0;
+
+  --font-text: "Literata", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+
+  --radius-s: 3px;
+  --radius-m: 6px;
+  --focus: 0 0 0 3px color-mix(in srgb, var(--c-lamp) 45%, transparent);
+
+  @media (prefers-color-scheme: dark) {
+    --c-paper: #141a17;
+    --c-surface: #1b2320;
+    --c-ink: #e4ebe6;
+    --c-ink-soft: #9aaaa1;
+    --c-line: #2e3a35;
+    --c-lamp: #6fbf98;
+    --c-lamp-strong: #93d3b3;
+    --c-success-bg: #1d3328;
+    --c-error-bg: #3a1f1c;
+    --c-danger: #f08a80;
+  }
+}

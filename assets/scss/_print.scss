@@ -1,0 +1,65 @@
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  :root {
+    --c-ink: #000;
+    --c-line: #999;
+  }
+
+  body {
+    background: #fff;
+    font-size: 10.5pt;
+  }
+
+  .site-header,
+  .flash,
+  .page-head__meta {
+    display: none;
+  }
+
+  main {
+    max-width: none;
+    padding: 0;
+  }
+
+  .table-wrap {
+    border: 0;
+    overflow: visible;
+  }
+
+  .book-table {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th,
+    td {
+      padding: 4pt 6pt;
+    }
+
+    td {
+      border-bottom: 0.75pt solid #999;
+    }
+
+    th span {
+      display: none;
+    }
+
+    a {
+      color: #000;
+    }
+
+    td:first-child a {
+      font-weight: 400;
+    }
+
+    tr {
+      break-inside: avoid;
+    }
+
+    tbody tr:hover td {
+      background: none;
+    }
+  }
+}

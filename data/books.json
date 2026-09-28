@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Babička",
+    "author": "Božena Němcová",
+    "year": 1855,
+    "annotation": "Obrazy venkovského života viděné očima vnoučat. Babička v nich zosobňuje moudrost, laskavost a řád tradičního světa v Babiččině údolí.",
+    "rating": 4
+  },
+  {
+    "title": "Máj",
+    "author": "Karel Hynek Mácha",
+    "year": 1836,
+    "annotation": "Lyricko-epická báseň o lásce, vině a pomíjivosti, zasazená do jarní noci před popravou otcovraha Viléma.",
+    "rating": 5
+  },
+  {
+    "title": "Krysař",
+    "author": "Viktor Dyk",
+    "year": 1915,
+    "annotation": "Novela na motivy pověsti o krysaři z Hamelnu. Tajemný cizinec vyžene z města krysy, a když mu měšťané odmítnou zaplatit, přijde odplata.",
+    "rating": 4
+  },
+  {
+    "title": "R.U.R.",
+    "author": "Karel Čapek",
+    "year": 1920,
+    "annotation": "Drama o továrně na umělé lidi, kteří se nakonec obrátí proti svým tvůrcům. Právě tady se poprvé objevilo slovo robot.",
+    "rating": 5
+  },
+  {
+    "title": "Osudy dobrého vojáka Švejka za světové války",
+    "author": "Jaroslav Hašek",
+    "year": 1921,
+    "annotation": "Satirický román o pražském psíčkaři, který svou horlivou poslušností zesměšňuje rakousko-uherskou armádu i celou válečnou mašinérii.",
+    "rating": 5
+  },
+  {
+    "title": "Válka s mloky",
+    "author": "Karel Čapek",
+    "year": 1936,
+    "annotation": "Satirický román o objevu inteligentních mloků, jejichž vykořisťování přeroste v celosvětový konflikt. Varování před nacionalismem a lidskou chamtivostí.",
+    "rating": 5
+  },
+  {
+    "title": "Saturnin",
+    "author": "Zdeněk Jirotka",
+    "year": 1942,
+    "annotation": "Humoristický román o vypravěči a jeho sluhovi Saturninovi, jehož nápady promění obyčejný pobyt u dědečka v řadu dobrodružství.",
+    "rating": 4
+  },
+  {
+    "title": "Malý princ",
+    "author": "Antoine de Saint-Exupéry",
+    "year": 1943,
+    "annotation": "Pohádka pro dospělé o setkání pilota ztroskotaného na poušti s chlapcem z malé planetky. Kniha o přátelství, odpovědnosti a o tom, co je skutečně důležité.",
+    "rating": 5
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "year": 1949,
+    "annotation": "Antiutopie o totalitním státě, který kontroluje myšlení svých obyvatel. Winston Smith se pokusí vzepřít Velkému bratrovi.",
+    "rating": 5
+  },
+  {
+    "title": "Spalovač mrtvol",
+    "author": "Ladislav Fuks",
+    "year": 1967,
+    "annotation": "Psychologický hororový román o zaměstnanci krematoria, jehož pokřivené myšlení se za okupace mění v nacistickou ideologii.",
+    "rating": 4
+  },
+  {
+    "title": "Mistr a Markétka",
+    "author": "Michail Bulgakov",
+    "year": 1967,
+    "annotation": "Satan navštíví Moskvu třicátých let a obrátí ji naruby. Souběžně se odvíjí příběh spisovatele, jeho milé a románu o Pilátovi.",
+    "rating": 5
+  },
+  {
+    "title": "Nesnesitelná lehkost bytí",
+    "author": "Milan Kundera",
+    "year": 1984,
+    "annotation": "Román o lásce, věrnosti a svobodě na pozadí událostí roku 1968, rozvíjený kolem otázky, zda je život lehký, nebo těžký.",
+    "rating": 4
+  }
+]
