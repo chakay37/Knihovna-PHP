@@ -1,63 +1,63 @@
 .site-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 2rem;
-  padding: 1rem max(1.25rem, calc((100% - 60rem) / 2));
-  background: var(--c-lamp-strong);
+  border-bottom: 4px solid var(--c-secondary);
+  background: var(--c-primary-strong);
   color: #fff;
-  border-bottom: 4px solid var(--c-card-red);
 
   @media (prefers-color-scheme: dark) {
-    background: #0e2a1e;
+      background: #0e2a1e;
   }
 
-  .brand,
-  .brand:hover {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .site-nav {
+  .site-header-content {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.25rem 1.25rem;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    width: 100%;
+    max-width: 70vw;
+    margin-inline: auto;
+    padding: 1rem;
 
-    a,
-    .link-button {
-      color: #d8e8df;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-
-    a:hover,
-    .link-button:hover {
+    .brand,
+    .brand:hover {
+      font-size: 1.5rem;
+      font-weight: 700;
       color: #fff;
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
+      text-decoration: none;
     }
 
-    a:focus-visible,
-    .link-button:focus-visible {
-      outline-color: #fff;
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.25rem 1.25rem;
+
+      a,
+      .link-button {
+        color: #d8e8df;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+
+      a:hover,
+      .link-button:hover {
+        color: #fff;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+      }
+
+      a:focus-visible,
+      .link-button:focus-visible {
+        outline-color: #fff;
+      }
     }
   }
 }
-
 main {
   width: 100%;
-  max-width: 60rem;
+  max-width: 70vw;
   margin-inline: auto;
   padding: 2.5rem 1.25rem 4rem;
-
-  .narrow {
-    max-width: 36rem;
-    margin-inline: auto;
-  }
 
   .page-head {
     display: flex;
@@ -67,7 +67,7 @@ main {
     gap: 0 1rem;
 
     .page-head__meta {
-      color: var(--c-ink-soft);
+      color: var(--c-text-lighter);
       margin: 0 0 1rem;
     }
   }

@@ -87,7 +87,7 @@ ob_start();
 
         <div class="form__actions">
             <button type="submit" class="button">Uložit knihu</button>
-            <a href="/admin/" class="button button--secondary">Zrušit</a>
+            <a href="/" class="button button--secondary">Zrušit</a>
         </div>
     </form>
 </div>

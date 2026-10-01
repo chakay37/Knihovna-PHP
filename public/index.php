@@ -22,7 +22,16 @@ $sortLink = static function (string $column, string $label) use ($sort, $dir): s
 ob_start();
 ?>
 <div class="title-container">
-    <h1 class="title">Seznam knih</h1>
+    <div class="page-head">
+        <h1 class="title">Seznam knih</h1>
+        <p class="page-head__meta"><?= count($books) ?> knih v evidenci</p>
+    </div>
+
+    <div class="toolbar">
+        <button type="button" class="button" data-print>Tisk</button>
+        <a class="button" href="/admin/vytvorit/">Přidat knihu</a>
+        <a class="button button--secondary" href="/admin/import/">Importovat z JSON</a>    
+    </div>
 
     <div class="table-wrap">
         <table class="book-table">
@@ -31,6 +40,7 @@ ob_start();
                     <?= $sortLink('title', 'Název') ?>
                     <?= $sortLink('author', 'Autor') ?>
                     <?= $sortLink('year', 'Rok vydání') ?>
+                    <th scope="col"><span class="visually-hidden">Akce</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +49,13 @@ ob_start();
                     <td><a href="/kniha/?id=<?= (int) $book['id'] ?>"><?= e($book['title']) ?></a></td>
                     <td><?= e($book['author']) ?></td>
                     <td class="num"><?= (int) $book['year'] ?></td>
+                    <td class="actions">
+                        <form method="post" action="/admin/smazat/"
+                              data-confirm="Opravdu smazat knihu „<?= e($book['title']) ?>“?">
+                            <input type="hidden" name="id" value="<?= (int) $book['id'] ?>">
+                            <button type="submit" class="link-button link-button--danger">Smazat</button>
+                        </form>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

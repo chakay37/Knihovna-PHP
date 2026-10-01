@@ -1,3 +1,5 @@
+@use "tokens" as t;
+
 *,
 *::before,
 *::after {
@@ -10,10 +12,10 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-text);
+  font-family: t.$font-text;
   line-height: 1.65;
-  color: var(--c-ink);
-  background: var(--c-paper);
+  color: var(--c-text);
+  background: var(--c-bg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -43,29 +45,29 @@ p {
 }
 
 a {
-  color: var(--c-lamp);
+  color: var(--c-primary);
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
 }
 
 a:hover {
-  color: var(--c-lamp-strong);
+  color: var(--c-primary-strong);
   text-decoration-thickness: 2px;
 }
 
 a:focus-visible,
 .button:focus-visible,
 .link-button:focus-visible {
-  outline: 2px solid var(--c-lamp);
+  outline: 2px solid var(--c-primary);
   outline-offset: 2px;
 }
 
 code {
   font-size: 0.9em;
   padding: 0.1em 0.35em;
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--radius-s);
+  background: var(--c-primary-darker);
+  border: 1px solid var(--c-primary-lighter);
+  border-radius: t.$radius-s;
 }
 
 .visually-hidden {

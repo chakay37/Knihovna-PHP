@@ -8,4 +8,4 @@ if (is_post() && $id) {
     books()->delete($id);
 }
 
-redirect('/admin/');
+redirect('/');

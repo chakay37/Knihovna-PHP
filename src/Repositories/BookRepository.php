@@ -25,6 +25,11 @@ class BookRepository
             ->fetchAll();
     }
 
+    public function count(): int
+    {
+        return (int) $this->db->query('SELECT COUNT(*) FROM books')->fetchColumn();
+    }
+
     /** @return array<string, mixed>|null */
     public function get(int $id): ?array
     {
