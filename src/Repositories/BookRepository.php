@@ -39,6 +39,15 @@ class BookRepository
         return $stmt->fetch() ?: null;
     }
 
+    /** @return list<array<string, mixed>> Ostatní knihy autora kromě knihy $exceptId */
+    public function getByAuthor(string $author, int $exceptId): array
+    {
+        $stmt = $this->db->prepare('SELECT id, title, author, year FROM books WHERE author = ? AND id <> ? ORDER BY year, title');
+        $stmt->execute([$author, $exceptId]);
+
+        return $stmt->fetchAll();
+    }
+
     /** @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book */
     public function create(array $book): int
     {

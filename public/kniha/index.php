@@ -9,6 +9,8 @@ if ($book === null) {
     http_response_code(404);
 }
 
+$sameAuthor = $book ? books()->getByAuthor($book['author'], (int) $book['id']) : [];
+
 ob_start();
 ?>
 <?php if ($book === null): ?>
@@ -18,22 +20,24 @@ ob_start();
     </div>
 <?php else: ?>
     <article class="book-detail">
+        <a class="button button--secondary" href="/">&larr; Zpět na seznam knih</a>
+
         <div class="title-container">
             <h1 class="title"><?= e($book['title']) ?></h1>
         </div>
 
-        <dl class="book-detail-info">
-            <dt>Autor</dt>
-            <dd><?= e($book['author']) ?></dd>
+        <div class="book-detail-info">
+            <h2>Autor</h2>
+            <p><?= e($book['author']) ?></p>
 
-            <dt>Rok vydání</dt>
-            <dd><?= (int) $book['year'] ?></dd>
+            <h2>Rok vydání</h2>
+            <p><?= (int) $book['year'] ?></p>
 
             <?php if ($book['rating'] !== null): ?>
-                <dt>Hodnocení</dt>
-                <dd><?= (int) $book['rating'] ?></dd>
+                <h2>Hodnocení</h2>
+                <p><?= str_repeat('★', (int) $book['rating']) . str_repeat('☆', 5 - (int) $book['rating']) ?> (<?= (int) $book['rating'] ?>)</p>
             <?php endif; ?>
-        </dl>
+        </div>
 
         <?php if ($book['annotation'] !== null): ?>
             <section class="book-detail-annotation">
@@ -41,8 +45,31 @@ ob_start();
                 <p><?= nl2br(e($book['annotation'])) ?></p>
             </section>
         <?php endif; ?>
+
+        <?php if ($sameAuthor !== []): ?>
+            <section class="book-detail-same-author">
+                <h2>Další knihy autora</h2>
+                <div class="table-wrap">
+                    <table class="book-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Název</th>
+                                <th scope="col">Rok vydání</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($sameAuthor as $other): ?>
+                            <tr>
+                                <td><a href="/kniha/?id=<?= (int) $other['id'] ?>"><?= e($other['title']) ?></a></td>
+                                <td class="num"><?= (int) $other['year'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        <?php endif; ?>
     </article>
 <?php endif; ?>
-<p><a href="/">&larr; Zpět na seznam knih</a></p>
 <?php
 layout($book['title'] ?? 'Kniha nenalezena', ob_get_clean());

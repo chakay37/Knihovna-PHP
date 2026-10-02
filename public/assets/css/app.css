@@ -144,7 +144,7 @@ code {
 .site-header .site-header-content .site-nav .link-button {
   color: #d8e8df;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .site-header .site-header-content .site-nav a:hover,
 .site-header .site-header-content .site-nav .link-button:hover {
@@ -181,7 +181,7 @@ main .page-head .page-head__meta {
   gap: 0.4rem;
   padding: 0.55rem 1.1rem;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
   color: #fff;
@@ -220,7 +220,7 @@ main .page-head .page-head__meta {
 
 .link-button--danger {
   color: var(--c-danger);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .toolbar {
@@ -250,7 +250,7 @@ main .page-head .page-head__meta {
   border-bottom: 1px solid var(--c-primary-lighter);
 }
 .book-table th {
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--c-text-lighter);
   border-bottom: 2px solid var(--c-text);
@@ -331,7 +331,7 @@ main .page-head .page-head__meta {
 }
 .field label {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 .field label .required {
   color: var(--c-danger);
@@ -367,7 +367,7 @@ main .page-head .page-head__meta {
 }
 .field .field__error {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--c-danger);
 }
@@ -393,7 +393,7 @@ main .page-head .page-head__meta {
 .import-result .import-result__errors {
   margin: 0 0 1rem;
   padding-left: 1.25rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .import-result--ok {
