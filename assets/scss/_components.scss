@@ -90,6 +90,10 @@ select.button {
   gap: 0.5rem;
 }
 
+.search-group {
+  display: inline-flex;
+}
+
 .search-field-wrap {
   position: relative;
   display: inline-flex;
@@ -104,6 +108,18 @@ select.button {
   background: var(--c-primary-darker);
   border: 1px solid var(--c-primary-lighter);
   border-radius: t.$radius-m;
+}
+
+.search-group .search-field {
+  border-color: var(--c-primary);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.search-group .button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .search-field:focus {

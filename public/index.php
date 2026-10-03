@@ -54,14 +54,6 @@ $sortLink = static function (string $column, string $label) use ($sortState, $is
     );
 };
 
-$dirState = $sortState($sort);
-$dirHref = $buildQuery([
-    'sort' => $dirState['nextSort'],
-    'dir' => $dirState['nextDir'],
-    'view' => $is_list ? null : 'cards',
-    'q' => $search !== '' ? $search : null,
-]);
-
 $viewHref = static fn (string $view): string => $buildQuery([
     'sort' => $sort,
     'dir' => $dir,
@@ -78,44 +70,41 @@ ob_start();
     </div>
 
     <div class="toolbar">
-        <button type="button" class="button" data-print>Tisk</button>
-        <a class="button" href="/admin/vytvorit/">Přidat knihu</a>
-        <a class="button button--secondary" href="/admin/import/">Importovat z JSON</a>
+        <button type="button" class="button" data-print><i class="fa-solid fa-print"></i> Tisk</button>
 
         <form method="get" class="search-form">
             <input type="hidden" name="sort" value="<?= e($sort) ?>">
             <input type="hidden" name="dir" value="<?= e($dir) ?>">
             <input type="hidden" name="view" value="<?= $is_list ? 'list' : 'cards' ?>">
             <label class="visually-hidden" for="search-field">Hledat</label>
-            <span class="search-field-wrap">
-                <input type="search" id="search-field" name="q" value="<?= e($search) ?>"
-                       placeholder="Hledat podle názvu, autora nebo roku…" class="search-field">
-                <button type="submit" name="q" value="" class="search-field__clear" aria-label="Vymazat hledání">&times;</button>
-            </span>
-            <button type="submit" class="button button--secondary">Hledat</button>
+            <div class="search-group">
+                <span class="search-field-wrap">
+                    <input type="search" id="search-field" name="q" value="<?= e($search) ?>"
+                           placeholder="Hledat podle názvu, autora nebo roku…" class="search-field">
+                    <button type="button" class="search-field__clear" data-clear-search aria-label="Vymazat hledání">&times;</button>
+                </span>
+                <button type="submit" class="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
         </form>
 
         <form method="get" class="sort-form">
             <input type="hidden" name="view" value="<?= $is_list ? 'list' : 'cards' ?>">
-            <input type="hidden" name="dir" value="<?= e($dir) ?>">
             <input type="hidden" name="q" value="<?= e($search) ?>">
+            <input type="hidden" name="dir" id="sort-dir-input" value="<?= e($dir) ?>">
             Řadit podle:
             <span class="select-wrap button button--secondary">
                 <select id="sort-field" name="sort">
                     <?php foreach ($sortFieldLabels as $column => $label): ?>
-                        <option value="<?= $column ?>" <?= $sort === $column ? 'selected' : '' ?>><?= e($label) ?></option>
+                        <option value="<?= $column ?>" data-dir="asc" <?= ($sort === $column && $dir === 'asc') ? 'selected' : '' ?>><?= e($label) ?> (vzestupně)</option>
+                        <option value="<?= $column ?>" data-dir="desc" <?= ($sort === $column && $dir === 'desc') ? 'selected' : '' ?>><?= e($label) ?> (sestupně)</option>
                     <?php endforeach; ?>
                 </select>
             </span>
         </form>
 
-        <a class="button button--secondary" href="<?= $dirHref ?>" aria-label="Směr řazení" aria-sort="<?= $dirState['ariaSort'] ?>">
-            <span aria-hidden="true"><?= $dirState['arrow'] ?></span>
-        </a>
-
         <div class="view-switch">
-            <a class="button button--secondary" href="<?= $viewHref('list') ?>" <?= $is_list ? 'aria-current="page"' : '' ?>>Seznam</a>
-            <a class="button button--secondary" href="<?= $viewHref('cards') ?>" <?= !$is_list ? 'aria-current="page"' : '' ?>>Dlaždice</a>
+            <a class="button button--secondary" href="<?= $viewHref('list') ?>" <?= $is_list ? 'aria-current="page"' : '' ?>><i class="fa-solid fa-list"></i> Seznam</a>
+            <a class="button button--secondary" href="<?= $viewHref('cards') ?>" <?= !$is_list ? 'aria-current="page"' : '' ?>><i class="fa-solid fa-table-cells"></i> Dlaždice</a>
         </div>
     </div>
 

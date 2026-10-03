@@ -23,7 +23,25 @@ document.addEventListener('click', (event) => {
 });
 
 document.addEventListener('change', (event) => {
-  if (event.target.closest('.sort-form')) {
-    event.target.form.submit();
+  const form = event.target.closest('.sort-form');
+  if (!form) {
+    return;
   }
+
+  if (event.target.id === 'sort-field') {
+    form.querySelector('#sort-dir-input').value = event.target.selectedOptions[0].dataset.dir;
+  }
+
+  form.submit();
+});
+
+document.addEventListener('click', (event) => {
+  const clear = event.target.closest('[data-clear-search]');
+  if (!clear) {
+    return;
+  }
+
+  const field = clear.closest('.search-field-wrap').querySelector('.search-field');
+  field.value = '';
+  clear.closest('form').submit();
 });
