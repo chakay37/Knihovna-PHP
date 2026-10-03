@@ -32,6 +32,35 @@
   background: color-mix(in srgb, var(--c-primary) 10%, transparent);
 }
 
+select.button {
+  appearance: none;
+  padding-right: 2rem;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap select {
+  appearance: none;
+  padding: 0 1.1rem 0 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+.select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c-primary);
+  pointer-events: none;
+}
+
 .link-button {
   padding: 0;
   font: inherit;
@@ -53,6 +82,97 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
+}
+
+.search-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-field-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.search-field {
+  width: 300px;
+  padding: 0.55rem 2.25rem 0.55rem 0.7rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--c-text);
+  background: var(--c-primary-darker);
+  border: 1px solid var(--c-primary-lighter);
+  border-radius: t.$radius-m;
+}
+
+.search-field:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: t.$focus;
+}
+
+.search-field__clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-text-lighter);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.search-field:placeholder-shown ~ .search-field__clear {
+  display: none;
+}
+
+.sort-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.view-switch {
+  display: inline-flex;
+
+  .button {
+    border-radius: 0;
+    margin-left: -1px;
+  }
+
+  .button:first-child {
+    margin-left: 0;
+    border-top-left-radius: t.$radius-m;
+    border-bottom-left-radius: t.$radius-m;
+  }
+
+  .button:last-child {
+    border-top-right-radius: t.$radius-m;
+    border-bottom-right-radius: t.$radius-m;
+  }
+
+  .button[aria-current="page"] {
+    color: #fff;
+    background: var(--c-primary);
+  }
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.book-card {
+  width: max(250px, 33% - 1rem);
+  padding: 1rem;
+  background: var(--c-primary-darker);
+  border: 1px solid var(--c-primary-lighter);
+  border-radius: t.$radius-m;
 }
 
 .table-wrap {

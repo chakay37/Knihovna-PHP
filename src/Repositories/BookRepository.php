@@ -15,14 +15,27 @@ class BookRepository
     }
 
     /** @return list<array<string, mixed>> */
-    public function getAll(string $sort = 'title', string $direction = 'asc'): array
+    public function getAll(string $sort = 'title', string $direction = 'asc', string $search = ''): array
     {
-        $column = in_array($sort, self::SORTABLE, true) ? $sort : 'title';
-        $direction = $direction === 'desc' ? 'DESC' : 'ASC';
+        $where = '';
+        $params = [];
 
-        return $this->db
-            ->query("SELECT id, title, author, year FROM books ORDER BY {$column} {$direction}, title ASC")
-            ->fetchAll();
+        if ($search !== '') {
+            $where = 'WHERE title LIKE :search OR author LIKE :search OR CAST(year AS CHAR) LIKE :search';
+            $params['search'] = '%' . $search . '%';
+        }
+
+        if ($direction === 'none') {
+            $order = 'id ASC';
+        } else {
+            $column = in_array($sort, self::SORTABLE, true) ? $sort : 'title';
+            $order = "{$column} " . ($direction === 'desc' ? 'DESC' : 'ASC') . ', title ASC';
+        }
+
+        $stmt = $this->db->prepare("SELECT id, title, author, year FROM books {$where} ORDER BY {$order}");
+        $stmt->execute($params);
+
+        return $stmt->fetchAll();
     }
 
     public function count(): int

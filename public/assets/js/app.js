@@ -10,3 +10,20 @@ document.addEventListener('submit', (event) => {
     event.preventDefault();
   }
 });
+
+document.addEventListener('click', (event) => {
+  if (event.target.tagName === 'SELECT') {
+    return;
+  }
+
+  const select = event.target.closest('.select-wrap')?.querySelector('select');
+  if (select?.showPicker) {
+    select.showPicker();
+  }
+});
+
+document.addEventListener('change', (event) => {
+  if (event.target.closest('.sort-form')) {
+    event.target.form.submit();
+  }
+});
