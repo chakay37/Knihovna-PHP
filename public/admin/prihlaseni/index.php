@@ -5,16 +5,19 @@ require_once __DIR__ . '/../../../src/helpers.php';
 use App\Auth;
 
 if (Auth::isToken()) {
-    redirect('/admin/');
+    redirect('/');
 }
+
+// Přihlašovací formulář
 
 $error = null;
 $username = is_string($_POST['username'] ?? null) ? trim($_POST['username']) : '';
 
+// Při potvrzení se zkusí přihlásit, jinak vypíše chybu.
 if (is_post()) {
     $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
     if (Auth::attemptLogin($username, $password)) {
-        redirect('/admin/');
+        redirect('/');
     }
 
     $error = 'Nesprávné uživatelské jméno nebo heslo.';

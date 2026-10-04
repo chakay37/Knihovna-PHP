@@ -1,5 +1,11 @@
 <?php
 declare(strict_types=1);
+
+// Hromadný import knih (admin-only) ze dvou zdrojů:
+//   - "prepared": soubor data/books.json uložený na serveru
+//   - "upload":   soubor nahraný přes formulář
+// JSON se dekóduje na objekty.
+// Všechny záznamy se validují.
 require_once __DIR__ . '/../../../src/helpers.php';
 require_admin();
 
@@ -13,20 +19,29 @@ $preparedExists = is_file($preparedFile);
 /** @var array{imported: int, skipped: int, errors: list<string>}|null $result */
 $result = null;
 
+//Při potvrzení importu.
 if (is_post()) {
     $result = ['imported' => 0, 'skipped' => 0, 'errors' => []];
     $json = null;
 
     if (($_POST['source'] ?? '') === 'prepared') {
+        // Větev pro prepared soubor.
         $json = $preparedExists ? file_get_contents($preparedFile) : null;
         $problem = $preparedExists ? null : 'Připravený soubor data/books.json neexistuje.';
     } else {
+        // Větev pro soubor nahraný přes formulář.
+        // Chybová hláška $problem zůstává null, pokud je upload v pořádku. 
+        // Testuje: 
+        // UPLOAD_ERR_NO_FILE - existenci nahraného souboru,  
+        // UPLOAD_ERR_INI_SIZE - max. velikost podle php.ini souboru. (default 2MB)
+        // ($file['size'] ?? 0) > MAX_UPLOAD_MB*1024*1024 - max. velikost souboru podle const MAX_UPLOAD_MB.
+        // $uploadError !== UPLOAD_ERR_OK - Ostatní chyby jako částečně nahraný soubor.
+
         $file = $_FILES['file'] ?? [];
         $uploadError = $file['error'] ?? UPLOAD_ERR_NO_FILE;
         $problem = match (true) {
             $uploadError === UPLOAD_ERR_NO_FILE => 'Vyberte soubor k nahrání.',
-            $uploadError === UPLOAD_ERR_INI_SIZE,
-            $uploadError === UPLOAD_ERR_FORM_SIZE,
+            $uploadError === UPLOAD_ERR_INI_SIZE => 'Soubor je moc velký.',
             ($file['size'] ?? 0) > MAX_UPLOAD_MB * 1024 * 1024 => 'Soubor je větší než ' . MAX_UPLOAD_MB . ' MB.',
             $uploadError !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name']) => 'Soubor se nepodařilo nahrát.',
             default => null,
@@ -34,14 +49,18 @@ if (is_post()) {
         $json = $problem === null ? file_get_contents($file['tmp_name']) : null;
     }
 
+    //json_decode() zkusí parsovat JSON na array objektů. 
     $items = is_string($json) ? json_decode($json, true) : null;
     if ($problem === null && (!is_array($items) || !array_is_list($items))) {
         $problem = 'Soubor musí obsahovat platný JSON se seznamem knih ([ {...}, {...} ]).';
     }
 
     if ($problem !== null) {
+        // Vrátí chybu k zobrazení.
         $result['errors'][] = $problem;
     } else {
+        // Každý záznam se ověří a importuje samostatně, takže jedna vadná
+        // nebo duplicitní položka nezablokuje zbytek souboru.
         foreach ($items as $i => $item) {
             [$data, $errors] = is_array($item) ? BookValidator::validate($item) : [null, []];
 

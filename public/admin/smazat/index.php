@@ -3,9 +3,12 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../../src/helpers.php';
 require_admin();
 
+// Cesta pro smazaní záznamu
+
+// Filtrace. Musí být kladné číslo.
 $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 if (is_post() && $id) {
     books()->delete($id);
 }
 
-redirect('/admin/');
+redirect('/');

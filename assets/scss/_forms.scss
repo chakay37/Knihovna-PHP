@@ -1,0 +1,109 @@
+// Formuláře knihy a hlášky, sdílené mezi admin/vytvorit/, kniha/?edit=1
+// (přes book_form.php) a admin/prihlaseni/.
+@use "tokens" as t;
+
+.form {
+  display: grid;
+  gap: 20px;
+
+  .form__actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.form--boxed {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--c-card-bg);
+  border: 1px solid var(--c-gray-border);
+  border-radius: t.$radius-m;
+  gap: 12px;
+  justify-items: start;
+
+  p {
+    margin: 0;
+  }
+}
+
+.field-row {
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 750px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+
+  label {
+    font-weight: 600;
+    font-size: 1.2rem;
+
+    .required {
+      color: var(--c-danger);
+    }
+  }
+
+  input:not([type="file"]),
+  select,
+  textarea {
+    width: 100%;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 1.2rem;
+    color: var(--c-text);
+    background: var(--c-card-bg);
+    border: 1px solid color-mix(in srgb, var(--c-text) 30%, transparent);
+    border-radius: t.$radius-s;
+  }
+
+  input:not([type="file"]):focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--c-primary);
+    box-shadow: t.$focus;
+  }
+
+  input[aria-invalid="true"],
+  select[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: var(--c-danger);
+    border-width: 2px;
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .field__error {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--c-danger);
+  }
+
+  .field__hint {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--c-text-lighter);
+  }
+}
+
+.flash {
+  max-width: none;
+  padding: 12px 16px;
+  border-left: 4px solid;
+  border-radius: t.$radius-s;
+}
+
+.flash--error {
+  background: var(--c-card-bg);
+  border-color: var(--c-danger);
+}

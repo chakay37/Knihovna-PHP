@@ -4,8 +4,8 @@
   }
 
   :root {
-    --c-ink: #000;
-    --c-line: #999;
+    --c-text: #000;
+    --c-gray-border: #999;
   }
 
   body {
@@ -15,7 +15,13 @@
 
   .site-header,
   .flash,
-  .page-head__meta {
+  .page-head__meta,
+  .toolbar,
+  .pagination {
+    display: none;
+  }
+
+  .book-table .actions {
     display: none;
   }
 

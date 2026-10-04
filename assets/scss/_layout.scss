@@ -1,58 +1,59 @@
 .site-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 2rem;
-  padding: 1rem max(1.25rem, calc((100% - 60rem) / 2));
-  background: var(--c-lamp-strong);
-  color: #fff;
-  border-bottom: 4px solid var(--c-card-red);
+  border-bottom: 4px solid var(--c-primary);
+  background: var(--c-primary-darker);
+  color: var(--c-page-bg);
 
-  @media (prefers-color-scheme: dark) {
-    background: #0e2a1e;
-  }
-
-  .brand,
-  .brand:hover {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  .site-nav {
+  .site-header-content {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem 1.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 32px;
+    width: 100%;
+    max-width: 70vw;
+    margin-inline: auto;
+    padding: 16px;
 
-    a,
-    .link-button {
-      color: #d8e8df;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-
-    a:hover,
-    .link-button:hover {
+    .brand,
+    .brand:hover {
+      font-size: 27pt;
+      font-weight: 700;
       color: #fff;
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
+      text-decoration: none;
     }
 
-    a:focus-visible,
-    .link-button:focus-visible {
-      outline-color: #fff;
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 20px;
+
+      a,
+      .link-button {
+        color: #fff;
+        text-decoration: none;
+        font-size: 15pt;
+      }
+
+      a:hover,
+      .link-button:hover {
+        color: #fff;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+      }
+
+      a:focus-visible,
+      .link-button:focus-visible {
+        outline-color: #fff;
+      }
     }
   }
 }
-
 main {
   width: 100%;
-  max-width: 60rem;
+  max-width: 70vw;
   margin-inline: auto;
-  padding: 2.5rem 1.25rem 4rem;
+  padding: 40px 20px 64px;
 
   .narrow {
     max-width: 36rem;
@@ -64,11 +65,11 @@ main {
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0 1rem;
+    gap: 0 16px;
 
     .page-head__meta {
-      color: var(--c-ink-soft);
-      margin: 0 0 1rem;
+      color: var(--c-text-lighter);
+      margin: 0 0 16px;
     }
   }
 }
