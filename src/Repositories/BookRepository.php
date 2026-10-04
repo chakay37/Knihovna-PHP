@@ -15,15 +15,9 @@ class BookRepository
     }
 
     /** @return list<array<string, mixed>> */
-    public function getAll(string $sort = 'title', string $direction = 'asc', string $search = ''): array
+    public function getAll(string $sort = 'title', string $direction = 'asc', string $search = '', int $page = 1, int $perPage = 10): array
     {
-        $where = '';
-        $params = [];
-
-        if ($search !== '') {
-            $where = 'WHERE title LIKE :search OR author LIKE :search OR CAST(year AS CHAR) LIKE :search';
-            $params['search'] = '%' . $search . '%';
-        }
+        [$where, $params] = $this->searchWhere($search);
 
         if ($direction === 'none') {
             $order = 'id ASC';
@@ -32,15 +26,40 @@ class BookRepository
             $order = "{$column} " . ($direction === 'desc' ? 'DESC' : 'ASC') . ', title ASC';
         }
 
-        $stmt = $this->db->prepare("SELECT id, title, author, year FROM books {$where} ORDER BY {$order}");
-        $stmt->execute($params);
+        $offset = max(0, $page - 1) * $perPage;
+
+        $stmt = $this->db->prepare("SELECT id, title, author, year FROM books {$where} ORDER BY {$order} LIMIT :limit OFFSET :offset");
+        $stmt->bindValue('limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->execute();
 
         return $stmt->fetchAll();
     }
 
-    public function count(): int
+    public function countAll(string $search = ''): int
     {
-        return (int) $this->db->query('SELECT COUNT(*) FROM books')->fetchColumn();
+        [$where, $params] = $this->searchWhere($search);
+
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM books {$where}");
+        $stmt->execute($params);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /** @return array{0: string, 1: array<string, string>} */
+    private function searchWhere(string $search): array
+    {
+        if ($search === '') {
+            return ['', []];
+        }
+
+        return [
+            'WHERE title LIKE :search OR author LIKE :search OR CAST(year AS CHAR) LIKE :search',
+            ['search' => '%' . $search . '%'],
+        ];
     }
 
     /** @return array<string, mixed>|null */

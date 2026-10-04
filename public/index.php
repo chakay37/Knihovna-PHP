@@ -2,13 +2,19 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../src/helpers.php';
 
+use App\Auth;
 use App\Repositories\BookRepository;
 
 $sort = in_array($_GET['sort'] ?? '', BookRepository::SORTABLE, true) ? $_GET['sort'] : 'title';
 $dir = in_array($_GET['dir'] ?? '', ['asc', 'desc', 'none'], true) ? $_GET['dir'] : 'asc';
 $search = trim((string) ($_GET['q'] ?? ''));
-$books = books()->getAll($sort, $dir, $search);
 $is_list = ($_GET['view'] ?? 'list') !== 'cards';
+
+$perPage = 9;
+$total = books()->countAll($search);
+$totalPages = max(1, (int) ceil($total / $perPage));
+$page = min(max(1, (int) ($_GET['page'] ?? 1)), $totalPages);
+$books = books()->getAll($sort, $dir, $search, $page, $perPage);
 
 $sortFieldLabels = [
     'title' => 'Název',
@@ -19,6 +25,13 @@ $sortFieldLabels = [
 $buildQuery = static fn (array $params): string => '?' . http_build_query(
     array_filter($params, static fn ($value) => $value !== null)
 );
+
+$baseQuery = [
+    'sort' => $sort,
+    'dir' => $dir,
+    'view' => $is_list ? null : 'cards',
+    'q' => $search !== '' ? $search : null,
+];
 
 $sortState = static function (string $column) use ($sort, $dir): array {
     $isActive = $sort === $column && $dir !== 'none';
@@ -34,19 +47,13 @@ $sortState = static function (string $column) use ($sort, $dir): array {
     return [
         'ariaSort' => $isActive ? ($dir === 'asc' ? 'ascending' : 'descending') : 'none',
         'arrow' => $isActive ? ($dir === 'asc' ? '▲' : '▼') : '<i class="fa-solid fa-sort"></i>',
-        'nextSort' => $column,
         'nextDir' => $nextDir,
     ];
 };
 
-$sortLink = static function (string $column, string $label) use ($sortState, $is_list, $search, $buildQuery): string {
+$sortLink = static function (string $column, string $label) use ($sortState, $baseQuery, $buildQuery): string {
     $state = $sortState($column);
-    $href = $buildQuery([
-        'sort' => $state['nextSort'],
-        'dir' => $state['nextDir'],
-        'view' => $is_list ? null : 'cards',
-        'q' => $search !== '' ? $search : null,
-    ]);
+    $href = $buildQuery([...$baseQuery, 'sort' => $column, 'dir' => $state['nextDir']]);
 
     return sprintf(
         '<th scope="col" aria-sort="%s"><a href="%s">%s <span aria-hidden="true">%s</span></a></th>',
@@ -54,19 +61,16 @@ $sortLink = static function (string $column, string $label) use ($sortState, $is
     );
 };
 
-$viewHref = static fn (string $view): string => $buildQuery([
-    'sort' => $sort,
-    'dir' => $dir,
-    'view' => $view === 'list' ? null : $view,
-    'q' => $search !== '' ? $search : null,
-]);
+$viewHref = static fn (string $view): string => $buildQuery([...$baseQuery, 'view' => $view === 'list' ? null : $view]);
+
+$pageHref = static fn (int $targetPage): string => $buildQuery([...$baseQuery, 'page' => $targetPage > 1 ? $targetPage : null]);
 
 ob_start();
 ?>
 <div class="title-container">
     <div class="page-head">
         <h1 class="title">Seznam knih</h1>
-        <p class="page-head__meta"><?= count($books) ?> knih v evidenci</p>
+        <p class="page-head__meta"><?= $total ?> knih v evidenci</p>
     </div>
 
     <div class="toolbar">
@@ -126,11 +130,14 @@ ob_start();
                         <td><?= e($book['author']) ?></td>
                         <td class="num"><?= (int) $book['year'] ?></td>
                         <td class="actions">
-                            <form method="post" action="/admin/smazat/"
-                                  data-confirm="Opravdu smazat knihu „<?= e($book['title']) ?>“?">
-                                <input type="hidden" name="id" value="<?= (int) $book['id'] ?>">
-                                <button type="submit" class="link-button link-button--danger">Smazat</button>
-                            </form>
+                            <?php if (Auth::isToken()): ?>
+                                <a class="link-button" href="/kniha/?id=<?= (int) $book['id'] ?>&edit=1">Upravit</a>
+                                <form method="post" action="/admin/smazat/"
+                                    data-confirm="Opravdu smazat knihu „<?= e($book['title']) ?>“?">
+                                    <input type="hidden" name="id" value="<?= (int) $book['id'] ?>">
+                                    <button type="submit" class="link-button link-button--danger">Smazat</button>
+                                </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -143,14 +150,29 @@ ob_start();
                 <article class="book-card">
                     <h3><a href="/kniha/?id=<?= (int) $book['id'] ?>"><?= e($book['title']) ?></a></h3>
                     <p><?= e($book['author']) ?> · <?= (int) $book['year'] ?></p>
-                    <form method="post" action="/admin/smazat/"
-                          data-confirm="Opravdu smazat knihu „<?= e($book['title']) ?>“?">
-                        <input type="hidden" name="id" value="<?= (int) $book['id'] ?>">
-                        <button type="submit" class="link-button link-button--danger">Smazat</button>
-                    </form>
+                    <div class="actions">
+                        <?php if (Auth::isToken()): ?>
+                            <a class="link-button" href="/kniha/?id=<?= (int) $book['id'] ?>&edit=1">Upravit</a>
+                        <?php endif; ?>
+                        <form method="post" action="/admin/smazat/"
+                              data-confirm="Opravdu smazat knihu „<?= e($book['title']) ?>“?">
+                            <input type="hidden" name="id" value="<?= (int) $book['id'] ?>">
+                            <button type="submit" class="link-button link-button--danger">Smazat</button>
+                        </form>
+                    </div>
                 </article>
             <?php endforeach; ?>
         </div>
+    <?php endif; ?>
+
+    <?php if ($totalPages > 1): ?>
+        <nav class="pagination" aria-label="Stránkování">
+            <a class="button button--secondary" href="<?= $pageHref(max(1, $page - 1)) ?>"
+               <?= $page <= 1 ? 'aria-disabled="true"' : '' ?>>&larr; Předchozí</a>
+            <span class="pagination__status">Strana <?= $page ?> z <?= $totalPages ?></span>
+            <a class="button button--secondary" href="<?= $pageHref(min($totalPages, $page + 1)) ?>"
+               <?= $page >= $totalPages ? 'aria-disabled="true"' : '' ?>>Další &rarr;</a>
+        </nav>
     <?php endif; ?>
 </div>
 <?php

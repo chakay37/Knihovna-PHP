@@ -15,7 +15,13 @@
 
   .site-header,
   .flash,
-  .page-head__meta {
+  .page-head__meta,
+  .toolbar,
+  .pagination {
+    display: none;
+  }
+
+  .book-table .actions {
     display: none;
   }
 
