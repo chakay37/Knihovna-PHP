@@ -30,6 +30,17 @@ function layout(string $title, string $content): void
     require __DIR__ . '/Views/layout.php';
 }
 
+/**
+ * @param array<string, string> $old
+ * @param array<string, string> $errors
+ */
+function book_form(string $action, array $old, array $errors, string $submitLabel, string $cancelHref): string
+{
+    ob_start();
+    require __DIR__ . '/Views/book_form.php';
+    return ob_get_clean();
+}
+
 function redirect(string $url): never
 {
     header("Location: $url");

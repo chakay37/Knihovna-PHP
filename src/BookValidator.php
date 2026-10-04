@@ -7,7 +7,7 @@ namespace App;
 final class BookValidator
 {
     public const MAX_TEXT = 255;
-    public const MAX_ANNOTATION = 5000;
+    public const MAX_ANNOTATION = 1000;
     public const MIN_YEAR = 1000;
 
     public static function maxYear(): int

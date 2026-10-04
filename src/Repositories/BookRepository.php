@@ -71,15 +71,31 @@ class BookRepository
         return (int) $this->db->lastInsertId();
     }
 
+    /** @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book */
+    public function update(int $id, array $book): void
+    {
+        $this->db
+            ->prepare('UPDATE books SET title = :title, author = :author, year = :year, annotation = :annotation, rating = :rating WHERE id = :id')
+            ->execute([...$book, 'id' => $id]);
+    }
+
     /**
      * Kniha je duplicitní, pokud má stejný název + autora + rok.
      *
      * @param array{title: string, author: string, year: int} $book
      */
-    public function isDuplicate(array $book): bool
+    public function isDuplicate(array $book, ?int $exceptId = null): bool
     {
-        $stmt = $this->db->prepare('SELECT 1 FROM books WHERE title = ? AND author = ? AND year = ?');
-        $stmt->execute([$book['title'], $book['author'], $book['year']]);
+        $sql = 'SELECT 1 FROM books WHERE title = ? AND author = ? AND year = ?';
+        $params = [$book['title'], $book['author'], $book['year']];
+
+        if ($exceptId !== null) {
+            $sql .= ' AND id <> ?';
+            $params[] = $exceptId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
 
         return $stmt->fetchColumn() !== false;
     }

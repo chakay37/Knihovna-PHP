@@ -45,3 +45,18 @@ document.addEventListener('click', (event) => {
   field.value = '';
   clear.closest('form').submit();
 });
+
+function updateCharCounter(textarea) {
+  const counter = document.getElementById(textarea.dataset.charCounter);
+  if (counter) {
+    counter.textContent = `${textarea.value.length} / ${textarea.maxLength}`;
+  }
+}
+
+document.querySelectorAll('textarea[data-char-counter]').forEach(updateCharCounter);
+
+document.addEventListener('input', (event) => {
+  if (event.target.matches('textarea[data-char-counter]')) {
+    updateCharCounter(event.target);
+  }
+});
