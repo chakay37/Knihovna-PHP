@@ -7,22 +7,21 @@ $focus: 0 0 0 3px color-mix(in srgb, var(--c-primary) 45%, transparent);
 :root {
   --c-page-bg: #ecedf1;
   --c-card-bg: #ffffff;
-  --c-text: #1c2622;
-  --c-text-lighter: #55635c;
+  --c-text: #1c1e26;
+  --c-text-lighter: #555563;
   --c-gray-border: #d5d6dd;
   --c-primary: #51599c;
   --c-primary-darker: #343771;
-  --c-secondary: #51599c;
   --c-danger: #a62830;
 
   @media (prefers-color-scheme: dark) {
-    --c-page-bg: #141a17;
-    --c-card-bg: #1b2320;
-    --c-text: #e4ebe6;
-    --c-text-lighter: #9aaaa1;
-    --c-gray-border: #2e3a35;
-    --c-primary: #6fbf98;
-    --c-primary-darker: #93d3b3;
-    --c-danger: #f08a80;
+      --c-page-bg: #13120e;
+      --c-card-bg: #000000;
+      --c-text: #e3e1d9;
+      --c-text-lighter: #aaaa9c;
+      --c-gray-border: #2a2922;
+      --c-primary: #6e78d2;
+      --c-primary-darker: #6976ea;
+      --c-danger: #a62830;
   }
 }

@@ -1,15 +1,19 @@
 <?php
 use App\BookValidator;
 
-/** @var string $action */
-/** @var array<string, string> $old */
-/** @var array<string, string> $errors */
-/** @var string $submitLabel */
-/** @var string $cancelHref */
+// Tento soubor se nikdy nevolá přímo (require), ale vždy přes helper book_form()
+// v helpers.php, který mu tímto předá tyto proměnné.
+/** @var string $action */ // Cílové URL formuláře (liší se pro vytvoření vs. editaci knihy).
+/** @var array<string, string> $old */ // Hodnoty k předvyplnění polí.
+/** @var array<string, string> $errors */ // Chybové hlášky podle názvu pole, nebo [] bez chyb.
+/** @var string $submitLabel */ // Text tlačítka pro odeslání ("Uložit knihu" / "Uložit změny").
+/** @var string $cancelHref */ // Kam vede tlačítko "Zrušit".
 
+// Pro pole s chybou vrátí HTML atributy aria-invalid/aria-describedby, jinak prázdný string.
 $field = static fn (string $name): string => isset($errors[$name])
     ? sprintf(' aria-invalid="true" aria-describedby="%s-error"', $name)
     : '';
+// Pro pole s chybou vykreslí text chyby pod polem, jinak prázdný string.
 $error = static fn (string $name): string => isset($errors[$name])
     ? sprintf('<p class="field__error" id="%s-error">%s</p>', $name, e($errors[$name]))
     : '';

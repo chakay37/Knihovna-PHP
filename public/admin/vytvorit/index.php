@@ -6,10 +6,13 @@ require_admin();
 use App\BookValidator;
 
 $errors = [];
+// Slouží ke znovu vyplnění formůláře při chybě ve validaci.
 $old = [];
 
+// Při potvrzení tvorby knihy.
 if (is_post()) {
     $old = $_POST;
+    // Validace formátu knihy.
     [$data, $errors] = BookValidator::validate($_POST);
 
     if ($errors === [] && books()->isDuplicate($data)) {
@@ -17,13 +20,16 @@ if (is_post()) {
     }
 
     if ($errors === []) {
-        // Post/Redirect/Get: obnovení stránky pak neodešle formulář znovu
+        // Post/Redirect/Get: 
+        // Vytvoření knížky. 
+        // Redirect na stránku knížky, aby refresh neposílal form znovu.
         redirect('/kniha/?id=' . books()->create($data));
     }
 
     http_response_code(422);
 }
 
+// Převede hodnoty na string aby mohli být znovu bezpečně vloženy.
 $old = array_map(static fn ($v) => is_string($v) ? $v : '', $old);
 
 ob_start();

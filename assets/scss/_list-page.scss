@@ -1,0 +1,173 @@
+// Hlavní výpis knih (public/index.php): toolbar, hledání, řazení, přepínač
+// pohledu seznam/dlaždice, dlaždicová karta knihy a stránkování.
+@use "tokens" as t;
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-form,
+.sort-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-group {
+  display: inline-flex;
+}
+
+.search-field-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.search-field {
+  width: 200px;
+  padding: 8px 36px 8px 12px;
+  font: inherit;
+  font-size: 1.2rem;
+  color: var(--c-text);
+  background: var(--c-card-bg);
+  border: 1px solid var(--c-gray-border);
+  border-radius: t.$radius-m;
+
+  @media (min-width: 750px) {
+    width: 300px;
+  }
+}
+
+.search-group .search-field {
+  border-color: var(--c-primary);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.search-group .button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.search-field:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: t.$focus;
+}
+
+.search-field__clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-text-lighter);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.search-field:placeholder-shown ~ .search-field__clear {
+  display: none;
+}
+
+.view-switch {
+  display: inline-flex;
+
+  .button {
+    border-radius: 0;
+    margin-left: -1px;
+  }
+
+  .button:first-child {
+    margin-left: 0;
+    border-top-left-radius: t.$radius-m;
+    border-bottom-left-radius: t.$radius-m;
+  }
+
+  .button:last-child {
+    border-top-right-radius: t.$radius-m;
+    border-bottom-right-radius: t.$radius-m;
+  }
+
+  .button[aria-current="page"] {
+    color: #fff;
+    background: var(--c-primary);
+  }
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: max(250px, 33% - 16px);
+  min-height: 220px;
+  padding: 16px;
+  background: var(--c-card-bg);
+  border: 1px solid var(--c-primary);
+  border-radius: t.$radius-m;
+
+  h3 {
+    margin-block: 10px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.pagination-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination .button[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.per-page-form {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.per-page-field {
+  width: 64px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 1.2rem;
+  color: var(--c-text);
+  background: var(--c-card-bg);
+  border: 1px solid var(--c-primary);
+  border-radius: t.$radius-m;
+}
+
+.per-page-field:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: t.$focus;
+}

@@ -4,20 +4,25 @@ require_once __DIR__ . '/../../src/helpers.php';
 
 use App\Auth;
 use App\BookValidator;
-
+// ID může být pouze kladné číslo.
 $id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+// Získá book pomocí ID
 $book = $id ? books()->get($id) : null;
 
 if ($book === null) {
     http_response_code(404);
 }
 
+// Autorizace editace
 $canEdit = $book !== null && Auth::isToken();
+// Bool jestli je zaplý mód editace.
 $editing = $canEdit && (($_GET['edit'] ?? '') === '1' || is_post());
 
 $errors = [];
 
+// Při potvrzení editace.
 if ($editing && is_post()) {
+    // Validace formuláře knihy.
     [$data, $errors] = BookValidator::validate($_POST);
 
     if ($errors === [] && books()->isDuplicate($data, $id)) {
@@ -25,11 +30,14 @@ if ($editing && is_post()) {
     }
 
     if ($errors === []) {
+        // Post/Redirect/Get: 
+        // Aktualizace knížky. 
+        // Redirect na stránku knížky bez edit módu, aby refresh neposílal form znovu.
         books()->update($id, $data);
         redirect('/kniha/?id=' . $id);
     }
-
-    $old = array_map(static fn ($v) => is_string($v) ? $v : '', $_POST);
+    // Chyba ve validaci. Slouží ke znovu vyplnění formůláře.
+    $old = $_POST;
     http_response_code(422);
 } elseif ($editing) {
     $old = [
@@ -42,6 +50,8 @@ if ($editing && is_post()) {
 } else {
     $old = [];
 }
+
+$old = array_map(static fn ($v) => is_string($v) ? $v : '', $old);
 
 $sameAuthor = $book !== null && !$editing ? books()->getByAuthor($book['author'], (int) $book['id']) : [];
 

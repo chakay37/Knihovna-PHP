@@ -1,0 +1,26 @@
+// Stránka hromadného importu (public/admin/import/index.php) – jen výsledek importu;
+// formuláře samotné stránky používají sdílené .form/.form--boxed z _forms.scss.
+@use "tokens" as t;
+
+.import-result {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border-left: 4px solid;
+  border-radius: t.$radius-s;
+
+  .import-result__errors {
+    margin: 0 0 16px;
+    padding-left: 20px;
+    font-size: 1.2rem;
+  }
+}
+
+.import-result--ok {
+  background: var(--c-card-bg);
+  border-color: var(--c-primary);
+}
+
+.import-result--warn {
+  background: var(--c-card-bg);
+  border-color: var(--c-danger);
+}

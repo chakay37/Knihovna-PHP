@@ -14,7 +14,14 @@ class BookRepository
     {
     }
 
-    /** @return list<array<string, mixed>> */
+    /**
+     * Vrátí jednu stránku knih (pro výpis). Řazení: podle $sort/$direction, nebo
+     * když je $direction 'none', pořadí podle id.
+     * Filtrování: $search prohledá název, autora i rok (viz searchWhere()).
+     * Stránkování: $page/$perPage se přepočítá na LIMIT/OFFSET.
+     *
+     * @return list<array<string, mixed>>
+     */
     public function getAll(string $sort = 'title', string $direction = 'asc', string $search = '', int $page = 1, int $perPage = 10): array
     {
         [$where, $params] = $this->searchWhere($search);
@@ -39,6 +46,9 @@ class BookRepository
         return $stmt->fetchAll();
     }
 
+    /**
+     * Celkový počet knih odpovídajících $search (bez stránkování)
+     */
     public function countAll(string $search = ''): int
     {
         [$where, $params] = $this->searchWhere($search);
@@ -49,7 +59,11 @@ class BookRepository
         return (int) $stmt->fetchColumn();
     }
 
-    /** @return array{0: string, 1: array<string, string>} */
+    /**
+     * Sestaví společnou WHERE podmínku a parametry pro getAll()/countAll(),
+     *
+     * @return array{0: string, 1: array<string, string>}
+     */
     private function searchWhere(string $search): array
     {
         if ($search === '') {
@@ -62,7 +76,9 @@ class BookRepository
         ];
     }
 
-    /** @return array<string, mixed>|null */
+    /** 
+     * Najde jednu knihu podle ID 
+     */
     public function get(int $id): ?array
     {
         $stmt = $this->db->prepare('SELECT * FROM books WHERE id = ?');
@@ -80,7 +96,11 @@ class BookRepository
         return $stmt->fetchAll();
     }
 
-    /** @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book */
+    /**
+     * Vloží novou knihu a vrátí její nově přidělené ID.
+     *
+     * @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book
+     */
     public function create(array $book): int
     {
         $this->db
@@ -90,7 +110,11 @@ class BookRepository
         return (int) $this->db->lastInsertId();
     }
 
-    /** @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book */
+    /**
+     * Přepíše všechny údaje existující knihy podle jejího ID.
+     *
+     * @param array{title: string, author: string, year: int, annotation: ?string, rating: ?int} $book
+     */
     public function update(int $id, array $book): void
     {
         $this->db
@@ -99,7 +123,8 @@ class BookRepository
     }
 
     /**
-     * Kniha je duplicitní, pokud má stejný název + autora + rok.
+     * Kniha je duplicitní, pokud má stejný název AND autora AND rok.
+     * $exceptId se vynechá z porovnání při editaci knihy.
      *
      * @param array{title: string, author: string, year: int} $book
      */
@@ -119,6 +144,9 @@ class BookRepository
         return $stmt->fetchColumn() !== false;
     }
 
+    /** 
+     * Smaže knihu podle ID. 
+     */
     public function delete(int $id): void
     {
         $this->db->prepare('DELETE FROM books WHERE id = ?')->execute([$id]);

@@ -1,11 +1,7 @@
 .site-header {
-  border-bottom: 4px solid var(--c-secondary);
+  border-bottom: 4px solid var(--c-primary);
   background: var(--c-primary-darker);
-  color: #fff;
-
-  @media (prefers-color-scheme: dark) {
-      background: #0e2a1e;
-  }
+  color: var(--c-page-bg);
 
   .site-header-content {
     display: flex;
@@ -34,7 +30,7 @@
 
       a,
       .link-button {
-        color: #d8e8df;
+        color: #fff;
         text-decoration: none;
         font-size: 15pt;
       }
@@ -58,6 +54,11 @@ main {
   max-width: 70vw;
   margin-inline: auto;
   padding: 40px 20px 64px;
+
+  .narrow {
+    max-width: 36rem;
+    margin-inline: auto;
+  }
 
   .page-head {
     display: flex;

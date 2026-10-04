@@ -1,0 +1,51 @@
+// Stránka detailu knihy (public/kniha/index.php) v náhledovém (nikoliv editačním) režimu.
+@use "tokens" as t;
+
+.book-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.book-detail-card {
+  padding: 32px;
+  background: var(--c-card-bg);
+  border: 1px solid var(--c-gray-border);
+  border-radius: t.$radius-m;
+}
+
+.book-detail-info {
+  margin-top: 24px;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--c-text-lighter);
+    margin: 0;
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin: 0 0 16px;
+    color: var(--c-primary);
+  }
+}
+
+.book-detail-annotation {
+  margin-top: 24px;
+
+  h2 {
+    font-size: 1.25rem;
+    color: var(--c-text-lighter);
+  }
+
+  p {
+    max-width: 65ch;
+    padding: 20px;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+    border: 1px solid var(--c-gray-border);
+    border-radius: t.$radius-m;
+  }
+}
