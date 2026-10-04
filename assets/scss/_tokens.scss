@@ -5,28 +5,24 @@ $radius-m: 6px;
 $focus: 0 0 0 3px color-mix(in srgb, var(--c-primary) 45%, transparent);
 
 :root {
-  --c-bg: #eef1ec;
-  --c-primary-darker: #ffffff;
+  --c-page-bg: #ecedf1;
+  --c-card-bg: #ffffff;
   --c-text: #1c2622;
   --c-text-lighter: #55635c;
-  --c-primary-lighter: #cdd5cf;
-  --c-primary: #1f5a43;
-  --c-primary-strong: #16432f;
-  --c-secondary: #c2413a;
-  --c-danger: #a3281f;
-  --c-success-bg: #e2efe7;
-  --c-error-bg: #f8e3e0;
+  --c-gray-border: #d5d6dd;
+  --c-primary: #51599c;
+  --c-primary-darker: #343771;
+  --c-secondary: #51599c;
+  --c-danger: #a62830;
 
   @media (prefers-color-scheme: dark) {
-    --c-bg: #141a17;
-    --c-primary-darker: #1b2320;
+    --c-page-bg: #141a17;
+    --c-card-bg: #1b2320;
     --c-text: #e4ebe6;
     --c-text-lighter: #9aaaa1;
-    --c-primary-lighter: #2e3a35;
+    --c-gray-border: #2e3a35;
     --c-primary: #6fbf98;
-    --c-primary-strong: #93d3b3;
-    --c-success-bg: #1d3328;
-    --c-error-bg: #3a1f1c;
+    --c-primary-darker: #93d3b3;
     --c-danger: #f08a80;
   }
 }

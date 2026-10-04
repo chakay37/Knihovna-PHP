@@ -21,7 +21,7 @@ use App\Auth;
 <body>
     <header class="site-header">
         <div class="site-header-content">
-            <a class="brand" href="/">Knihovna</a>
+            <a class="brand" href="/">KNIHOVNA</a>
             <nav class="site-nav" aria-label="Navigace">
                 <a href="/">Seznam knih</a>
                 <?php if (Auth::isToken()): ?>

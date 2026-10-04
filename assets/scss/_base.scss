@@ -14,8 +14,9 @@ body {
   margin: 0;
   font-family: t.$font-text;
   line-height: 1.65;
+  font-size: 1.2rem;
   color: var(--c-text);
-  background: var(--c-bg);
+  background: var(--c-page-bg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,8 +31,8 @@ h2 {
 h1 {
   font-size: 2rem;
 
-  @media (min-width: 48rem) {
-    font-size: 2.5rem;
+  @media (min-width: 750px) {
+    font-size: 27pt;
   }
 }
 
@@ -51,7 +52,7 @@ a {
 }
 
 a:hover {
-  color: var(--c-primary-strong);
+  color: var(--c-primary-darker);
   text-decoration-thickness: 2px;
 }
 
@@ -60,14 +61,6 @@ a:focus-visible,
 .link-button:focus-visible {
   outline: 2px solid var(--c-primary);
   outline-offset: 2px;
-}
-
-code {
-  font-size: 0.9em;
-  padding: 0.1em 0.35em;
-  background: var(--c-primary-darker);
-  border: 1px solid var(--c-primary-lighter);
-  border-radius: t.$radius-s;
 }
 
 .visually-hidden {
